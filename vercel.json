@@ -1,0 +1,262 @@
+Cover image for Deploying FastAPI app on Vercel Serverless
+Abdullah Adeel
+Abdullah Adeel
+Posted on Apr 1,
+2023 • Originally published at abdadeel.Medium
+
+
+50
+
+1
+
+1
+Deploying FastAPI app on Vercel Serverless
+#
+python
+#
+serverless
+#
+fastapi
+#
+webdev
+There are good chances that I don’t explain what is vercel if you’re a javascript developer but for python folks out there, vercel is a cloud computing platform focused on serverless hosting solutions for web applications. It’s especially popular among developers using frontend frameworks like Next.js, Nuxt.js, and SvelteKit.
+
+This article aims to act as a quick guide if you want to deploy a FastAPI application serverless leveraging python runtime. Moreover, vercel is free so 🤞.
+
+Primarily, you need these three files set up in your application.
+
+requirements.txt: This file will have all your dependencies. Run: pip freeze > requirements.txt in your dev environment to get this file.
+vercel.json: This file contains information for vercel to set up your runtime when deploying.
+main.py: This python file can be named differently but it should contain the FastAPI app.
+# main.py  
+from fastapi import FastAPI  
+
+app = FastAPI() # This is what will be refrenced in config
+Assuming the given file structure:
+
+root_dir  
+        - main.py  
+        - requirements.txt  
+        - vercel.json
+add this in vercel.json
+
+{
+    "builds": [
+        {
+            "src": "main.py",
+            "use": "@vercel/python"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "main.py"
+        }
+    ]
+}
+If your application structure is different, change build.src and routes.destto point to the python file containing the root application app.
+
+After your app is ready, push the source code to GitHub for seamless automatic future deployments with vercel.
+
+Visit vercel and create an account if you don’t already have one.
+
+Create a new application and connect it to the appropriate GitHub repo.
+
+Additionally in the environment variable section, you might need to configure the port. Copy and paste PORT=8000 in the key field. If you have other environment variables that your application expects like database config, feel free to add those here too.
+
+Hit deploy and in moments, your API is up and running.
+
+Demo Application
+https: //vercel-fastapi-deployment.vercel.app
+
+Source Code
+https: //github.com/mabdullahadeel/vercel-fastapi-deployment
+
+Until next time 👋.
+
+profile
+CodeRabbit
+Promoted
+
+Image of Coderabbit
+
+Cut Code Review Time & Bugs in Half with CodeRabbit
+Boost your team with AI-driven PR feedback! CodeRabbit offers instant PR summaries, smart code walkthroughs,
+1-click commit suggestions, and seamless code quality & security checks, reducing tech debt. Ship faster with fewer bugs. Try CodeRabbit free today!
+
+Learn more
+
+Top comments (5)
+Subscribe
+pic
+Add to the discussion
+ 
+ 
+highcenburg profile image
+Vicente G. Reyes
+•
+Dec 29 '23
+
+This helped! Thank you!
+
+
+2
+ likes
+Like
+Reply
+ 
+ 
+avasdream_b4c6c1789d1333a profile image
+Avasdream
+•
+Dec 7
+
+If you're encountering the error: "A Serverless Function has exceeded the unzipped maximum size of 250 MB", it's likely due to unnecessary files being included in your deployment package. To resolve this, you can exclude non-essential files and directories from your build using the excludeFiles property in your vercel.json.
+
+Here’s an example vercel.json configuration that helps minimize the deployment size: {
+    "builds": [
+        {
+            "src": "app/main.py",
+            "use": "@vercel/python"
+        }
+    ],
+    "routes": [
+        {
+            "src": "app/(.*)",
+            "dest": "app/main.py"
+        }
+    ],
+    "excludeFiles": [
+        "**/*.pyc",
+        "**/__pycache__/**",
+        ".env",
+        ".git/**",
+        ".venv/**",
+        "automations/**",
+        "docs/**",
+        "logdir/**",
+        "tests/**",
+        "prisma/migrations/**",
+        "Dockerfile",
+        "README.md",
+        "pytest.ini",
+        "package.json"
+    ]
+}
+
+
+1
+ like
+Like
+Reply
+ 
+ 
+priyanshu_choudhary_b6ac1 profile image
+Priyanshu Choudhary
+•
+Jun 28
+
+what about routes
+
+
+Like
+Reply
+ 
+ 
+zekijohn profile image
+Zekaryas
+•
+Jan 13
+
+I'm getting this error
+
+Error: A Serverless Function has exceeded the unzipped maximum size of 250 MB.
+
+
+1
+ like
+Like
+Reply
+ 
+ 
+gauravbharat profile image
+Gaurav Bhārat Mendse
+•
+Feb 19
+
+You may want to try using .gitignore inside the proejct folder to only include the bare minimum required files
+
+
+1
+ like
+Like
+Reply
+Code of Conduct • Report abuse
+profile
+mogenius
+Promoted
+
+Image of Kubernets ebook
+
+Want to Build a Kubernetes Deployment Process Your Developers Will Love?
+Learn More
+
+Read next
+wittedtech-by-harshit profile image
+Reflection API in Java: The Superpower You Didn’t Know You Had
+Harshit Singh - Nov 29
+
+muhammadmedhat profile image
+Opinionated vs. Non-Opinionated Frameworks: Understanding the Difference
+Muhammad Medhat - Nov 28
+
+alexandrecalaca profile image
+How to Switch Your Rails Application Database from PostgreSQL to SQLite
+Alexandre Calaça - Nov 28
+
+shhdharmen profile image
+Black Friday Sale: Angular Material Dev
+Dharmen Shah - Nov 28
+
+
+Abdullah Adeel
+Follow
+Let's build and pitch the next big thing.
+Work
+Full Stack Developer
+Joined
+Jun 28,
+2021
+More from Abdullah Adeel
+We fixed react context 🚀. Using selectors for granular reactivity
+#react #javascript #redux #webdev
+How to add Discord like QR Code Login
+#typescript #webdev #javascript #python
+Using Firebase to send real-time notifications in Django apps
+#django #firebase #nextjs #webdev
+profile
+Neon
+Promoted
+
+Top 3 Features in Postgres 17
+
+RDS Postgres vs Neon
+
+Learn about the top 3 features in the latest version of Postgres.
+
+See Article
+
+{
+    "builds": [
+        {
+            "src": "main.py",
+            "use": "@vercel/python"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "main.py"
+        }
+    ]
+}
