@@ -26,3 +26,7 @@ async def root(country):
     print(country)
     template = "what is the capital of "+country +" , the responce should be one world in any input if you didnt recongise the country or any problem happen you just return false ?"
     return model.invoke(prompt_template.format(country=country)).content
+
+@app.get('/few_shot_learning/{equations}')
+async def calculate(equations):
+    return model.invoke(equations).content
